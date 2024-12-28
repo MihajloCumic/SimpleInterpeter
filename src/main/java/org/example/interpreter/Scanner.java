@@ -12,11 +12,11 @@ public class Scanner {
     private int current = 0;
     private int line = 1;
 
-    Scanner(String source){
+    public Scanner(String source){
         this.source = source;
     }
 
-    List<Token> scanTokens(){
+    public List<Token> scanTokens(){
         while(!isAtEnd()){
             start = current;
             scanToken();
@@ -33,9 +33,9 @@ public class Scanner {
     private void scanToken(){
         char c = advance();
         switch (c){
-            case '{' : addToken(TokenType.LEFT_BRACKET);break;
-            case '}' : addToken(TokenType.RIGHT_BRACKET);break;
-            case '=' : addToken(TokenType.EQUAL);break;
+            case '{' : addToken(TokenType.LEFT_BRACKET); break;
+            case '}' : addToken(TokenType.RIGHT_BRACKET); break;
+            case '=' : addToken(TokenType.EQUAL); break;
             case '/' :
                 if(match('/')){
                     while(peek() != '\n' && !isAtEnd()) advance();
@@ -43,6 +43,8 @@ public class Scanner {
                     System.err.println("unexpected character: /");
                 }
                 break;
+            case ' ', '\r', '\t': break;
+            case '\n' : line++; break;
             default:
                 System.err.println("Unexpected character");
                 break;
@@ -76,4 +78,17 @@ public class Scanner {
         tokens.add(new Token(type, text, literal, line));
     }
 
+    private void number(){
+        while(isDigit(peek())) advance();
+        //proveriti greske npr. za 12345abc sta se desi
+        addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
+    }
+
+    private boolean isDigit(char c){
+        return c >= '0' && c <= '9';
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
 }
