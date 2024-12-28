@@ -2,7 +2,9 @@ package org.example.interpreter;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Scanner {
     private final String source;
@@ -11,6 +13,14 @@ public class Scanner {
     private int start = 0;
     private int current = 0;
     private int line = 1;
+
+    private static final Map<String, TokenType> keywords;
+    static {
+        keywords = new HashMap<>();
+        keywords.put("scope", TokenType.SCOPE);
+        keywords.put("print", TokenType.PRINT);
+    }
+
 
     public Scanner(String source){
         this.source = source;
@@ -46,7 +56,11 @@ public class Scanner {
             case ' ', '\r', '\t': break;
             case '\n' : line++; break;
             default:
-                System.err.println("Unexpected character");
+                if(isDigit(c)){
+                    number();
+                }else{
+                    System.err.println("Unexpected character");
+                }
                 break;
         }
     }
@@ -80,8 +94,7 @@ public class Scanner {
 
     private void number(){
         while(isDigit(peek())) advance();
-        //proveriti greske npr. za 12345abc sta se desi
-        addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
+        addToken(TokenType.NUMBER, Long.parseLong(source.substring(start, current)));
     }
 
     private boolean isDigit(char c){
