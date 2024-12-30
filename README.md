@@ -1,5 +1,24 @@
 # Simple Intepreter
 This Java project implements an interpreter for a simple programming language that supports variable assignment, scoped operations, and variable printing.
+## Grammar
+```plaintext
+nonterminals = { START, BLOCK, EXPR, ASSIGN_EXPR, LITERAL_EXPR, PRINT_EXPR, SCOPE_EXPR }
+terminals = { identifier, number, print, scope, {, }, = }
+rules:
+  START -> BLOCK
+
+  BLOCK -> EXPR BLOCK | EXPR
+
+  EXPR -> ASSIGN_EXPR | PRINT_EXPR | LITERAL_EXPR | SCOPE_EXPR
+
+  ASSIGN_EXPR -> identifier = LITERAL_EXPR
+
+  LITERAL_EXPR -> identifier | number
+
+  PRINT_EXPR -> print LITERAL_EXPR
+
+  SCOPE_EXPR -> scope { BLOCK }
+```
 ## Languge features
 ### Variable assignment
 - Assign a variable to some integer value, syntax `<name> = <integer value>`
@@ -39,6 +58,3 @@ print x
 null
 1
 ```
-## Grammar
-```plaintext
-nonterminals = {
