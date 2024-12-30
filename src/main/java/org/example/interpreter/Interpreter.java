@@ -27,10 +27,14 @@ public class Interpreter implements Visitor<Void> {
 
     @Override
     public Void visitAssignment(Assignment expr) {
-        String name = expr.getIdentifier().lexeme;
-        Object value = expr.getLiteral().getValue().literal;
-        if(value == null) throw new RuntimeException("Interpreter error: null value cannot be assigned.");
-        environment.putVariable(name, value);
+        String varName = expr.getIdentifier().lexeme;
+        Token literal  = expr.getLiteral().getValue();
+        if(literal.tokenType == TokenType.NUMBER){
+            environment.putVariable(varName, literal.literal);
+            return null;
+        }
+        Object value = environment.getFirstVariableFromScopes(literal.lexeme);
+        environment.putVariable(varName, value);
         return null;
     }
 

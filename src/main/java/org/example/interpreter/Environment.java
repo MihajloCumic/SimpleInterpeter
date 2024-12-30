@@ -22,4 +22,12 @@ public class Environment {
     public void removeScope(){
         scopeStack.pop();
     }
+
+    public Object getFirstVariableFromScopes(String name){
+        for(int i = scopeStack.size() - 1; i >= 0; i--){
+            Map<String, Object> map = scopeStack.get(i);
+            if(map.containsKey(name)) return map.get(name);
+        }
+        return null;
+    }
 }
