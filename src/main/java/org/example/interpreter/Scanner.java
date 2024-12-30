@@ -58,7 +58,9 @@ public class Scanner {
             default:
                 if(isDigit(c)){
                     number();
-                }else{
+                } else if (isAlpha(c)) {
+                    identifier();
+                } else{
                     System.err.println("Unexpected character");
                 }
                 break;
@@ -101,7 +103,22 @@ public class Scanner {
         return c >= '0' && c <= '9';
     }
 
-    public List<Token> getTokens() {
-        return tokens;
+    private boolean isAlpha(char c){
+        return (c >= 'a' && c <= 'z') ||
+                (c >= 'A' && c <= 'Z') ||
+                c == '_';
+    }
+
+    private boolean isAlphaNumeric(char c){
+        return isAlpha(c) || isDigit(c);
+    }
+
+    private void identifier(){
+        while(isAlphaNumeric(peek())) advance();
+
+        String text = source.substring(start, current);
+        TokenType type = keywords.get(text);
+        if(type == null) type = TokenType.IDENTIFIER;
+        addToken(type);
     }
 }
