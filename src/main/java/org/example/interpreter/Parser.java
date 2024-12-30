@@ -19,7 +19,6 @@ public class Parser {
     private Block block(){
         Block block = new Block();
         while (!isAtEnd()){
-            System.out.println(peek().tokenType);
             block.addExpression(expression());
         }
         return block;
