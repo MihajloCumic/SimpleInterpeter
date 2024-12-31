@@ -7,7 +7,11 @@ import java.util.Stack;
 public class Environment {
     private final Stack<Map<String, Object>> scopeStack = new Stack<>();
     public void addNewScope(){
-        scopeStack.push(new HashMap<>());
+        Map<String, Object> newScope = new HashMap<>();
+        if(!scopeStack.isEmpty()){
+            newScope.putAll(scopeStack.peek());
+        }
+        scopeStack.push(new HashMap<>(newScope));
     }
     public void putVariable(String name, Object value){
         scopeStack.peek().put(name, value);
@@ -24,10 +28,15 @@ public class Environment {
     }
 
     public Object getFirstVariableFromScopes(String name){
-        for(int i = scopeStack.size() - 1; i >= 0; i--){
-            Map<String, Object> map = scopeStack.get(i);
-            if(map.containsKey(name)) return map.get(name);
+        Map<String, Object> currScope = scopeStack.peek();
+        if(currScope.containsKey(name)){
+            return currScope.get(name);
         }
         return null;
+//        for(int i = scopeStack.size() - 1; i >= 0; i--){
+//            Map<String, Object> map = scopeStack.get(i);
+//            if(map.containsKey(name)) return map.get(name);
+//        }
+//        return null;
     }
 }
