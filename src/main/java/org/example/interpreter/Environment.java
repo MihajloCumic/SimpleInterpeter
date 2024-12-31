@@ -33,10 +33,5 @@ public class Environment {
             return currScope.get(name);
         }
         return null;
-//        for(int i = scopeStack.size() - 1; i >= 0; i--){
-//            Map<String, Object> map = scopeStack.get(i);
-//            if(map.containsKey(name)) return map.get(name);
-//        }
-//        return null;
     }
 }
