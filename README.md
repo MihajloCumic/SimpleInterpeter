@@ -1,5 +1,12 @@
 # Simple Intepreter
 This Java project implements an interpreter for a simple programming language that supports variable assignment, scoped operations, and variable printing.
+## Usage
+To run this program, you need to provide the path to a file as a command-line argument (there is one example file src/main/resources/prog1.txt)
+### Maven
+```bash
+mvn clean install
+java -jar target/interpreter-1.0-SNAPSHOT.jar <path-to-file>
+```
 ## Grammar
 ```plaintext
 nonterminals = { START, BLOCK, EXPR, ASSIGN_EXPR, LITERAL_EXPR, PRINT_EXPR, SCOPE_EXPR }
